@@ -1,5 +1,6 @@
 package common.extensions;
 
+import api.iteration2_senior.enums.WireMockFault;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
 import com.github.tomakehurst.wiremock.client.WireMock;
@@ -46,24 +47,17 @@ public class FraudCheckWireMockExtension implements BeforeEachCallback, AfterEac
                 config.status(),
                 config.decision(),
                 config.riskScore(),
-                config.reason(),
+                config.reason().getValue(),
                 config.requiresManualReview(),
                 config.additionalVerificationRequired());
 
-        // Mock the fraud detection service endpoint
-//        stubFor(post(urlPathMatching(config.endpoint()))
-//                .willReturn(aResponse()
-//                        .withStatus(config.httpStatus())
-//                        .withFixedDelay(config.delayMs())
-//                        .withHeader("Content-Type", "application/json")
-//                        .withBody(responseBody)));
         ResponseDefinitionBuilder response = aResponse()
                 .withStatus(config.httpStatus())
                 .withFixedDelay(config.delayMs())
                 .withHeader("Content-Type", "application/json")
                 .withBody(responseBody);
 
-        if (config.fault() != FraudCheckMock.WireMockFault.NONE) {
+        if (config.fault() != WireMockFault.NONE) {
             response.withFault(Fault.valueOf(config.fault().name()));
         }
 

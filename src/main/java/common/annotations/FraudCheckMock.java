@@ -1,5 +1,9 @@
 package common.annotations;
 
+import api.iteration2_senior.enums.FraudDecision;
+import api.iteration2_senior.enums.FraudReason;
+import api.iteration2_senior.enums.FraudStatus;
+import api.iteration2_senior.enums.WireMockFault;
 import common.extensions.FraudCheckWireMockExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -15,12 +19,12 @@ public @interface FraudCheckMock {
     /**
      * The fraud check status to return
      */
-    String status() default "SUCCESS";
+    FraudStatus status() default FraudStatus.SUCCESS;
 
     /**
      * The fraud check decision
      */
-    String decision() default "APPROVED";
+    FraudDecision decision() default FraudDecision.APPROVED;
 
     /**
      * The risk score (0.0 to 1.0)
@@ -30,7 +34,7 @@ public @interface FraudCheckMock {
     /**
      * The reason for the fraud check result
      */
-    String reason() default "Low risk transaction";
+    FraudReason reason() default FraudReason.LOW_RISK_TRANSACTION;
 
     /**
      * Whether manual review is required
@@ -57,11 +61,4 @@ public @interface FraudCheckMock {
      * The endpoint path to mock
      */
     String endpoint() default "/fraud-check";
-
-    public enum WireMockFault {
-        NONE,
-        CONNECTION_RESET_BY_PEER,
-        EMPTY_RESPONSE,
-        MALFORMED_RESPONSE
-    }
 }
